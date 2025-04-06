@@ -1,0 +1,26 @@
+<div class="profile-container">
+    <div class="profile-header">
+      <div class="profile-image">
+        <img src="https://via.placeholder.com/150" alt="Profile Picture" />
+      </div>
+      <div class="profile-info">
+        <h2>{{ username }}</h2>
+        <p class="email">{{ email }}</p>
+      </div>
+    </div>
+  
+    <div class="product-section">
+      <h3>Your Products</h3>
+      <div class="product-list">
+        <div *ngFor="let product of products" class="product-card">
+          <h4>{{ product.name }}</h4>
+          <p>{{ product.description }}</p>
+          <p><strong>Price:</strong> ${{ product.price }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="logout">
+      <button (click)="logout()">Log Out</button>
+    </div>
+  </div>

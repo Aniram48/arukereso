@@ -1,0 +1,35 @@
+<div class="search-container">
+    <h1>Search Products</h1>
+    
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search for products..." />
+      <button (click)="search()">Search</button>
+      <select name="" id="">
+        <option value="foods">Foods</option>
+        <option value="electrics">Electrics</option>
+        <option value="clothes">Clothes</option>
+        <option value="beauty">Beauty</option>
+        <option value="health">Health</option>
+        <option value="toys">Toys</option>
+        <option value="books">Books</option>
+    </select>
+    </div>
+    
+    
+    
+    <div class="featured-products">
+      <h2>Featured Products</h2>
+      
+      <div *ngIf="filteredProducts.length > 0" class="product-list">
+        <div *ngFor="let product of filteredProducts" class="product-card">
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.description }}</p>
+          <p><strong>Price:</strong> ${{ product.price }}</p>
+        </div>
+      
+        
+        
+      </div>
+    </div>
+    
+</div>
