@@ -35,7 +35,6 @@ import { Subscription } from 'rxjs';
   ],
 
   templateUrl: './app.component.html',
-  /* template: '<router-outlet></router-outlet>', */
   styleUrl: './app.component.scss'
   
 })

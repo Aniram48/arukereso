@@ -1,14 +1,11 @@
 
 import { Injectable } from '@angular/core';
-
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-
   private products = [
-    {
-      id: 1,
+    {id: 1,
       name: 'Smartphone XYZ',
       description: 'High-end smartphone with advanced features',
       price: 499.99,
@@ -16,8 +13,7 @@ export class ProductService {
       category: 'electrics',
       details: 'Smartphone XYZ comes with a 6.5-inch OLED display, 128GB storage, and a 12MP rear camera.'
     },
-    {
-      id: 2,
+    {id: 2,
       name: 'Organic Apples',
       description: 'Fresh organic apples from local farms',
       price: 4.99,
@@ -25,8 +21,7 @@ export class ProductService {
       category: 'foods',
       details: 'These apples are grown without pesticides and are rich in vitamins and antioxidants.'
     },
-    {
-      id: 3,
+    {id: 3,
       name: 'Summer Dress',
       description: 'Light and comfortable summer dress',
       price: 39.99,
@@ -35,8 +30,7 @@ export class ProductService {
       sizes: ['S', 'M', 'L', 'XL'],
       details: 'This dress is made from soft cotton fabric, perfect for the warm weather and casual outings.'
     },
-    {
-      id: 4,
+    {id: 4,
       name: 'Harry Potter Book Set',
       description: 'Complete set of Harry Potter books',
       price: 79.99,
@@ -44,8 +38,7 @@ export class ProductService {
       category: 'books',
       details: 'This box set includes all seven books in the Harry Potter series, featuring exclusive cover art.'
     },
-    {
-      id: 5,
+    {id: 5,
       name: 'Vitamin C Supplements',
       description: 'High quality Vitamin C supplements',
       price: 12.99,
@@ -53,8 +46,7 @@ export class ProductService {
       category: 'health',
       details: 'Boost your immune system with these potent Vitamin C supplements, each serving providing 1000mg.'
     },
-    {
-      id: 6,
+    {id: 6,
       name: 'Cookies',
       description: 'Delicious homestyle chocolate chip cookies, freshly baked',
       price: 5.99,
@@ -62,8 +54,7 @@ export class ProductService {
       category: 'foods',
       details: 'Baked with love, these cookies have a perfect balance of crispy edges and chewy centers.'
     },
-    {
-      id: 7,
+    {id: 7,
       name: 'Kettle',
       description: 'Fast heating 1.7L electric kettle with temperature control',
       price: 34.99,
@@ -71,8 +62,7 @@ export class ProductService {
       category: 'electrics',
       details: 'This kettle boils water quickly and has a temperature control feature for precise boiling.'
     },
-    {
-      id: 8,
+    {id: 8,
       name: 'Red shirt',
       description: 'Comfortable 100% cotton red t-shirt, perfect for casual wear',
       price: 19.99,
@@ -81,8 +71,7 @@ export class ProductService {
       sizes: ['S', 'M', 'L', 'XL'],
       details: 'Made from soft, breathable cotton, this shirt is ideal for warm weather and casual outings.'
     },
-    {
-      id: 9,
+    {id: 9,
       name: 'Wireless Headphones',
       description: 'Noise-cancelling wireless headphones with 30 hour battery life',
       price: 129.99,
@@ -136,8 +125,7 @@ export class ProductService {
       category: 'beauty',
       details: 'These lip balms are made with beeswax, vitamin E, and essential oils, keeping your lips soft and smooth.'
     },
-    {
-      id: 15,
+    { id: 15,
       name: 'Science Fiction Novel',
       description: 'Bestselling sci-fi novel about space exploration',
       price: 14.99,
@@ -209,22 +197,16 @@ export class ProductService {
       details: 'This yoga ball is ideal for enhancing core strength and improving flexibility through various exercises.'
     },
   ];
-  
-
   constructor() { }
-
   getAllProducts() {
     return this.products;
   }
-
   getProductById(id: number) {
     return this.products.find(product => product.id === id);
   }
-
   getProductsByCategory(category: string) {
     return this.products.filter(product => product.category === category);
   }
-
   searchProducts(term: string, category?: string) {
     return this.products.filter(product => {
       const termMatch = !term.trim() || 
@@ -244,7 +226,6 @@ export class ProductService {
       .map(({ value }) => value)
       .slice(0, count); 
   }
- 
     searchProductsWithFilters(term: string, category?: string, minPrice?: number, maxPrice?: number) {
       return this.products.filter(product => {
         const termMatch = !term.trim() || 

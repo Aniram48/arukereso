@@ -55,7 +55,6 @@ export class LoginComponent {
       this.usersService.login(email, password).subscribe({
         next: () => {
           this.isLoading = false;
-          // Ellenőrizzük, van-e visszairányítási URL
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/profile';
           this.router.navigateByUrl(returnUrl);
         },

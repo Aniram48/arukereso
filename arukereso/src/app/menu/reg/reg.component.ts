@@ -63,55 +63,14 @@ export class RegComponent {
     
     return null;
   }
-  
- /*  onSubmit() {
-    if (this.registerForm.valid) {
-      this.isLoading = true;
-      const { name, email, password } = this.registerForm.value;
-  
-      this.usersService.register(name, email, password).subscribe({
-        next: () => {
-          this.isLoading = false;
-          this.snackBar.open('Sikeres regisztráció! Kérjük, jelentkezz be.', 'Bezár', {
-            duration: 5000,
-            panelClass: ['success-snackbar']
-          });
-          
-          this.usersService.login(email, password).subscribe({
-            next: () => {
-              this.router.navigate(['/dashboard']); 
-            },
-            error: (err) => {
-              console.error('Login error after registration:', err);
-              this.snackBar.open('Hiba történt a bejelentkezés során.', 'Bezár', {
-                duration: 5000,
-                panelClass: ['error-snackbar']
-              });
-            }
-          });
-        },
-        error: (err) => {
-          this.isLoading = false;
-          this.snackBar.open('A regisztráció sikertelen. Kérjük, próbáld újra.', 'Bezár', {
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          });
-          console.error('Registration error:', err);
-        }
-      });
-    } else {
-      this.registerForm.markAllAsTouched();
-    }
-  } */
     onSubmit() {
       if (this.registerForm.valid) {
         this.isLoading = true;
         const { name, email, password } = this.registerForm.value;
   
-        // Regisztrációs logika: Ha az email nem található meg a felhasználók között, hozzáadjuk
+        
         const userExists = this.usersService.isLoggedIn();
         
-        // Itt most a regisztráció csak akkor történik, ha nincs bejelentkezve
         if (userExists) {
           this.snackBar.open('Jelenleg már be vagy jelentkezve.', 'Bezár', {
             duration: 5000,
@@ -120,7 +79,6 @@ export class RegComponent {
           return;
         }
   
-        // A felhasználó validálása a szolgáltatásban
         this.usersService.login(email, password).subscribe({
           next: () => {
             this.isLoading = false;
@@ -128,7 +86,7 @@ export class RegComponent {
               duration: 5000,
               panelClass: ['success-snackbar']
             });
-            this.router.navigate(['/profile']); // Navigálj a profil oldalra
+            this.router.navigate(['/profile']); 
           },
           error: (err) => {
             this.isLoading = false;
