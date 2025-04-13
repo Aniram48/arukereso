@@ -1,6 +1,22 @@
-
-<select name="" id="">
-    <option value="home">Home</option>
-    <option value="search">Search</option>
-    <option value="profile">Profile</option>
-</select>
+<mat-nav-list class="fixed-menu">
+    <a mat-list-item routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="close()">
+      <mat-icon matListIcon>home</mat-icon>
+      <span matListItemTitle>Home</span>
+    </a>
+    
+    <a mat-list-item routerLink="/search" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="close()">
+      <mat-icon matListIcon>search</mat-icon>
+      <span matListItemTitle>Search</span>
+    </a>
+    
+    <a mat-list-item routerLink="/profile" routerLinkActive="active"[routerLinkActiveOptions]="{ exact: true }" (click)="close()">
+      <mat-icon matListIcon>person</mat-icon>
+      <span matListItemTitle>Profile</span>
+    </a>
+    <li *ngIf="isLoggedIn">
+      <a mat-list-item routerLink="/cart" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>shopping_cart</mat-icon> 
+        <span matListItemTitle>Cart</span>
+      </a>
+    </li>
+  </mat-nav-list>

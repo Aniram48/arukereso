@@ -1,26 +1,33 @@
-<div class="profile-container">
-    <div class="profile-header">
-      <div class="profile-image">
-        <img src="https://via.placeholder.com/150" alt="Profile Picture" />
-      </div>
-      <div class="profile-info">
-        <h2>{{ username }}</h2>
-        <p class="email">{{ email }}</p>
-      </div>
-    </div>
-  
-    <div class="product-section">
-      <h3>Your Products</h3>
-      <div class="product-list">
-        <div *ngFor="let product of products" class="product-card">
-          <h4>{{ product.name }}</h4>
-          <p>{{ product.description }}</p>
-          <p><strong>Price:</strong> ${{ product.price }}</p>
+  <div class="profile-container">
+    <mat-card *ngIf="user" class="profile-card">
+
+      <mat-card-header>
+        <div mat-card-avatar class="profile-avatar">
+          <img [src]="user.image" alt="Profilkép" >
         </div>
-      </div>
-    </div>
-  
-    <div class="logout">
-      <button (click)="logout()">Log Out</button>
-    </div>
+        <mat-card-title>{{ user.name }}</mat-card-title>
+        <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p><strong>Phone number:</strong> {{ user.phone }}</p>
+        <p><strong>Description:</strong> {{ user.bio }}</p>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="editProfile()">Edit profile</button>
+          <button mat-raised-button color="warn" (click)="logout()">Log out</button>
+        </mat-card-actions>
+        <h3>My products</h3>
+        <div class="product-list">
+          <mat-card *ngFor="let product of user.products" class="product-card">
+            
+            <mat-card-title  class="w">{{ product.name }}</mat-card-title>
+            <mat-card-subtitle  class="w">{{ product.description }}</mat-card-subtitle>
+            <app-rating [rating]="product.id" class="w"></app-rating>
+            <p class="w"><strong>Price:</strong> {{ product.price | currency:'USD' }}</p>
+            <button mat-raised-button color="warn" (click)="removeProduct(product)">Clear</button>
+          </mat-card>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
+  

@@ -1,10 +1,10 @@
 <div class="search-container">
     <h1>Search Products</h1>
-    
     <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search for products..." />
+      <input type="text" id="searchInput" placeholder="Search for products..." [(ngModel)]="searchTerm" (keyup.enter)="search()"/>
       <button (click)="search()">Search</button>
-      <select name="" id="">
+      <select [(ngModel)]="selectedCategory">
+        <option value="" disabled selected>Category</option>
         <option value="foods">Foods</option>
         <option value="electrics">Electrics</option>
         <option value="clothes">Clothes</option>
@@ -13,23 +13,34 @@
         <option value="toys">Toys</option>
         <option value="books">Books</option>
     </select>
-    </div>
-    
-    
-    
-    <div class="featured-products">
-      <h2>Featured Products</h2>
-      
-      <div *ngIf="filteredProducts.length > 0" class="product-list">
-        <div *ngFor="let product of filteredProducts" class="product-card">
-          <h3>{{ product.name }}</h3>
-          <p>{{ product.description }}</p>
-          <p><strong>Price:</strong> ${{ product.price }}</p>
+    <div class="price-dropdown">
+      <button class="price-dropdown-btn" (click)="togglePriceFilter()">
+        Price: ${{minPrice}} - ${{maxPrice}}
+      </button>
+      <div class="price-dropdown-content" [class.show]="showPriceFilter">
+        <div class="price-slider">
+          <label>Min: ${{minPrice}}</label>
+          <input type="range" [(ngModel)]="minPrice" [min]="0" [max]="priceMax" (change)="search()">
         </div>
-      
-        
-        
+        <div class="price-slider">
+          <label>Max: ${{maxPrice}}</label>
+          <input type="range" [(ngModel)]="maxPrice" [min]="0" [max]="priceMax" (change)="search()">
+        </div>
       </div>
     </div>
-    
+    </div>
+    <div class="featured-products">
+      <div *ngIf="filteredProducts.length > 0" class="product-list">
+        <div *ngFor="let product of filteredProducts" class="product-card" [routerLink]="['/product', product.id]">
+          <img [src]="product.image" alt="{{ product.name }}" class="product-image" />
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.description }}</p>
+          <p class="text"><strong>Price:</strong> {{ product.price | money:'USD':true:'1.0-0' }}</p>
+        </div>
+
+      </div>
+      <div *ngIf="filteredProducts.length === 0" class="no-results">
+        <p>No products found matching your search.</p>
+      </div>
+    </div>
 </div>

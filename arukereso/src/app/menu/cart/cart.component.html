@@ -1,0 +1,30 @@
+<div *ngIf="cartItems.length > 0" class="cart-container">
+    <h3 mat-card-title>Your Cart</h3>
+    <mat-card class="cart-card">
+      <mat-list>
+        <mat-list-item *ngFor="let item of cartItems; let i = index">
+          <span class="cart-item-name">{{ item.name }}  {{ item.selectedSize }} - {{ item.price | money:'USD':true:'1.0-0' }} </span>
+          <button mat-icon-button  (click)="removeItem(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
+  
+      <div class="cart-footer">
+        <button mat-raised-button  (click)="clearCart()">clear Cart</button>
+        <button mat-raised-button  (click)="purchaseItems()">purchase</button>
+        <button mat-raised-button  (click)="checkout()">back to search</button>
+      </div>
+    </mat-card>
+  </div>
+  
+  <div *ngIf="cartItems.length === 0"  class="cart-container">
+    <h3 mat-card-title>Your Cart</h3>
+    <mat-card>
+        
+      <mat-card-content>
+        <p>Your cart is empty.</p>
+        <button mat-raised-button  (click)="checkout()">back to search</button>
+      </mat-card-content>
+    </mat-card>
+  </div>

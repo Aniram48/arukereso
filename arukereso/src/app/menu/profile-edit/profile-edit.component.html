@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Profil szerkesztése</h2>
+<mat-dialog-content>
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="Név" formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Email" formControlName="email" type="email">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Telefon" formControlName="phone">
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea matInput placeholder="Bemutatkozás" formControlName="bio"></textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" placeholder="New password">
+        <mat-error *ngIf="profileForm.get('password')?.hasError('minlength')">Password must be at least 6 characters</mat-error>
+    </mat-form-field>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="closeDialog()">Mégse</button>
+      <button mat-button type="submit" [disabled]="profileForm.invalid">Mentés</button>
+    </div>
+  </form>
+</mat-dialog-content>

@@ -1,1 +1,42 @@
-<p>product works!</p>
+
+<div class="product-detail-container" *ngIf="product">
+    <div class="product-image-container">
+      <img [src]="product.image" alt="{{ product.name }}" class="product-full-image">
+    </div>
+    
+    <div class="product-info">
+      <h1>{{ product.name }}</h1>
+      <p class="category">Category: {{ product.category }}</p>
+      <p class="price">Price: {{ product.price | money:'USD':true:'1.0-0' }}</p>
+      <p class="description">{{ product.description }}</p>
+      
+      <div class="sizes" *ngIf="product.category === 'clothes'">
+        <h3>Available Sizes:</h3>
+        <div *ngFor="let size of product.sizes" 
+             [ngClass]="{
+               'size-small': size === 'S',
+               'size-medium': size === 'M',
+               'size-large': size === 'L',
+               'size-xlarge': size === 'XL',
+               'selected': selectedSize === size
+             }"
+             (click)="selectSize(size)">
+          {{ size }}
+        </div>
+      </div>
+
+      <div class="details-section">
+        <h1>details</h1>
+        <p>{{ product.details }}</p>
+      </div>
+      
+      <button class="add-to-cart-btn" (click)="addToCart(product)">Add to Cart</button>
+      <button class="back-btn" (click)="goToSearch()">Back to Search</button>
+    </div>
+  </div>
+  
+  <div *ngIf="!product" class="not-found">
+    <h2>Product not found</h2>
+    <p>Sorry, we couldn't find the product you're looking for.</p>
+    <button class="back-btn" (click)="goToSearch()">Back to Search</button>
+  </div>

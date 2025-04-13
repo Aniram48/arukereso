@@ -1,42 +1,31 @@
-
 <div class="home-container">
-    <h1>Welcome to the ProductNest</h1>
-    
-    <div class="intro-text">
-      <p> Discover top deals and unbeatable prices! Use our search tool to explore the products</p>
-    </div>
-    <div class="call-to-action">
-        <button (click)="goToSearch()">Start Searching</button>
-      </div>
-    <div class="featured-products">
-      <h2>Featured Products</h2>
-      
-      <div class="product-list">
-        <div class="product-card">
-          <h3>Product 1</h3>
-          <p>Description of product 1</p>
-          <p><strong>Price:</strong> $99.99</p>
-        </div>
-        
-        <div class="product-card">
-          <h3>Product 2</h3>
-          <p>Description of product 2</p>
-          <p><strong>Price:</strong> $89.99</p>
-        </div>
-        
-        <div class="product-card">
-          <h3>Product 3</h3>
-          <p>Description of product 3</p>
-          <p><strong>Price:</strong> $79.99</p>
-        </div>
+  <h1>Welcome to the ProductNest</h1>
 
-        <div class="product-card">
-            <h3>Product 4</h3>
-            <p>Description of product 4</p>
-            <p><strong>Price:</strong> $49.99</p>
-          </div>
-      </div>
-    </div>
-    
-    
+  <div class="intro-text">
+    <p>Discover top deals and unbeatable prices! Use our search tool to explore the products</p>
   </div>
+
+  <div class="call-to-action">
+    <button mat-raised-button color="primary" (click)="goToSearch()">Start Searching</button>
+  </div>
+
+  <div class="featured-products">
+    <h2>Featured Products</h2>
+
+    <div class="product-list">
+      <mat-card
+        *ngFor="let product of featuredProducts"
+        class="product-card"
+        [routerLink]="['/product', product.id]"
+        appearance="outlined"
+      >
+        <img mat-card-image [src]="product.image" alt="{{ product.name }}" class="product-image" />
+        <mat-card-title>{{ product.name }}</mat-card-title>
+        <mat-card-content>
+          <p>{{ product.description }}</p>
+          <p><strong>Price:</strong> {{ product.price | money: 'USD': true: '1.0-0' }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

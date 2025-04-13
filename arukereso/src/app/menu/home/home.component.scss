@@ -2,6 +2,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    
   }
   
   body {
@@ -9,19 +10,17 @@
     background-color: #f9f9f9;
   }
   
-  /* Home container */
   .home-container {
-    max-width: 1000px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 20px;
     background-color: white;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 8px rgba(134, 27, 27, 0.1);
     border-radius: 10px;
     text-align: center;
     background-color: #f2f2dc;
   }
   
-  /* Header style */
   h1 {
     font-size: 2.5rem;
     margin-bottom: 20px;
@@ -38,7 +37,6 @@
     color: #666;
   }
   
-  /* Featured products section */
   .featured-products {
     margin-top: 40px;
     background-color: #DCCCB6;
@@ -49,10 +47,9 @@
   .featured-products h2 {
     font-size: 2rem;
     margin-bottom: 20px;
-    color: #333;
+    color:black;
   }
   
-  /* Product list styling */
   .product-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -70,19 +67,18 @@
   
   .product-card h3 {
     font-size: 1.2rem;
-    color: #333;
+    color: black;
   }
   
   .product-card p {
     font-size: 1rem;
-    color: #555;
+    color: black;
   }
   
   .product-card strong {
     font-weight: bold;
   }
   
-  /* Call-to-action button */
   .call-to-action {
     margin-top: 30px;
   }
@@ -92,11 +88,68 @@
     font-size: 1.2rem;
     background-color: #DCCCB6;
     color: black;
-    border: none;
+    border: 2px solid black;
     border-radius: 5px;
     cursor: pointer;
   }
   
+  mat-card-title {
+    color: black;
+  }
   .call-to-action button:hover {
-    background-color: #afa391;
+     background-color: #afa391; 
+  }
+  .product-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .product-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    width: 200px;
+    height: 300px;
+    background-color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.2);
+    }
+    h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    
+    }
+    p {
+      font-size: 14px;
+    
+    }
+    .product-image {
+      height: 120px;
+      width: 170px;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+    
+    .text {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+  }
+  .featured-products {
+    margin-top: 40px;
+    background-color: #DCCCB6;
+    padding: 20px;
+    border-radius: 10px;
+    height: 100%;
+    
+    h2 {
+      margin-bottom: 20px;
+    }
   }

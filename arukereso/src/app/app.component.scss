@@ -1,5 +1,47 @@
-* {
-   
-    padding: 20px;  
-    box-sizing: border-box;  
+ nav { 
+  display: flex; 
+  justify-content: flex-end; 
+  width: 100%; 
+  } 
+  ul { 
+    display: flex; 
+    list-style: none; 
+    margin-block-start: 0; 
+    margin-block-end: 0; 
+    gap: 50px; 
+  
   }
+  a { 
+    text-decoration: none; 
+   color: white;  
+  
+  } 
+  mat-sidenav-container { 
+  height: 100%; 
+  } 
+
+  mat-toolbar{ 
+     background-color: #DCCCB6; 
+    color: white;  
+  
+    mat-icon { 
+      color: white; 
+      } 
+}
+ .mat-drawer-container {
+    background-color: white;
+  } 
+
+  .menubtn{
+    display: none;
+  }
+  
+  @media (max-width: 710px) {
+    .menubtn{
+      display: block;
+    }
+    nav ul{
+      display: none;
+    }
+  }
+   
