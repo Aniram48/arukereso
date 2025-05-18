@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,8 +9,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Subscription } from 'rxjs';
 
 import { UsersService } from '../../services/users.service';
+import { AuthService } from '../../services/auth.service';
+
+import { UserCredential } from '@angular/fire/auth';
+import { FirebaseError } from '@angular/fire/app';
 
 @Component({
   selector: 'app-login',
@@ -29,65 +34,111 @@ import { UsersService } from '../../services/users.service';
     MatProgressSpinnerModule
   ]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   hidePassword = true;
   isLoading = false;
-  
+  loginError: string = '';
+  showLoginForm: boolean = true;
+  authSubscription?: Subscription;
+
   constructor(
     private fb: FormBuilder,
     private usersService: UsersService,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      email: ['alma@gmail.com', [Validators.required, Validators.email]], // Alapértelmezett email
+      password: ['alma123', [Validators.required, Validators.minLength(6)]] // Alapértelmezett jelszó
     });
   }
-    
-  onSubmit() {
-    if (this.loginForm.valid) {
-      this.isLoading = true;
-      const { email, password } = this.loginForm.value;
-      
-      this.usersService.login(email, password).subscribe({
-        next: () => {
-          this.isLoading = false;
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/profile';
-          this.router.navigateByUrl(returnUrl);
-        },
-        error: (err) => {
-          this.isLoading = false;
-          this.snackBar.open('Sikertelen bejelentkezés. Kérjük, ellenőrizd az adataidat.', 'Bezár', {
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          });
-          console.error('Login error:', err);
-        }
-      });
-    } else {
-      this.loginForm.markAllAsTouched();
+
+  ngOnInit() {
+    // Ellenőrizzük, hogy már be van-e jelentkezve a felhasználó
+    this.authSubscription = this.authService.isLoggedIn().subscribe(user => {
+      if (user) {
+        this.router.navigateByUrl('/home');
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
     }
   }
-  
+
+  onSubmit() {
+    if (this.loginForm.invalid) {
+      this.loginError = 'Kérlek töltsd ki helyesen az adatokat.';
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    const emailValue = this.loginForm.get('email')?.value || '';
+    const passwordValue = this.loginForm.get('password')?.value || '';
+
+    this.isLoading = true;
+    this.showLoginForm = false;
+    this.loginError = '';
+
+    this.authService.signIn(emailValue, passwordValue)
+      .then((userCredential: UserCredential) => {
+        console.log('Login successful:', userCredential.user);
+        this.authService.updateLoginStatus(true);
+        
+        // Késleltetett navigáció a home oldalra (hogy legyen idő a státusz frissítésére)
+        setTimeout(() => {
+          this.router.navigateByUrl('/home');
+        }, 500);
+      })
+      .catch((error: FirebaseError) => {
+        console.error('Login error:', error);
+        this.isLoading = false;
+        this.showLoginForm = true;
+
+        switch (error.code) {
+          case 'auth/user-not-found':
+            this.loginError = 'No account found with this email address';
+            break;
+          case 'auth/wrong-password':
+            this.loginError = 'Incorrect password';
+            break;
+          case 'auth/invalid-credential':
+            this.loginError = 'Invalid email or password';
+            break;
+          default:
+            this.loginError = 'Authentication failed. Please try again later.';
+        }
+      });
+  }
+
   navigateToRegister() {
     this.router.navigate(['/reg']);
   }
 
   getEmailErrorMessage() {
-    if (this.loginForm.get('email')?.hasError('required')) {
+    const emailCtrl = this.loginForm.get('email');
+    if (emailCtrl?.hasError('required')) {
       return 'Az email cím megadása kötelező';
     }
-    return this.loginForm.get('email')?.hasError('email') ? 'Érvénytelen email formátum' : '';
+    if (emailCtrl?.hasError('email')) {
+      return 'Érvénytelen email formátum';
+    }
+    return '';
   }
 
   getPasswordErrorMessage() {
-    if (this.loginForm.get('password')?.hasError('required')) {
+    const passwordCtrl = this.loginForm.get('password');
+    if (passwordCtrl?.hasError('required')) {
       return 'A jelszó megadása kötelező';
     }
-    return this.loginForm.get('password')?.hasError('minlength') ? 
-        'A jelszónak legalább 6 karakterből kell állnia' : '';
+    if (passwordCtrl?.hasError('minlength')) {
+      return 'A jelszónak legalább 6 karakterből kell állnia';
+    }
+    return '';
   }
 }

@@ -7,6 +7,7 @@ import { ProductService } from '../../services/product.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
+import { SortPipe } from '../../sort.pipe';
 
 interface Product {
   id: number;
@@ -19,7 +20,7 @@ interface Product {
 @Component({
   selector: 'app-search',
   imports: [NgFor, NgIf, FormsModule, RouterModule,MoneyPipe,
-    MatFormFieldModule,MatCardModule,MatSelectModule
+    MatFormFieldModule,MatCardModule,MatSelectModule 
    ],
   templateUrl: './search.component.html',
   standalone: true,

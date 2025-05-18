@@ -1,5 +1,6 @@
 
 import { Injectable } from '@angular/core';
+import { Product } from '../models/product';
 @Injectable({
   providedIn: 'root'
 })
@@ -201,43 +202,52 @@ export class ProductService {
   getAllProducts() {
     return this.products;
   }
-  getProductById(id: number) {
+  getProductById(id: number): Product | undefined {
     return this.products.find(product => product.id === id);
   }
-  getProductsByCategory(category: string) {
+
+  getProductsByCategory(category: string): Product[] {
     return this.products.filter(product => product.category === category);
   }
-  searchProducts(term: string, category?: string) {
+
+  searchProducts(term: string, category?: string): Product[] {
     return this.products.filter(product => {
-      const termMatch = !term.trim() || 
-                      product.name.toLowerCase().includes(term.toLowerCase()) || 
-                      product.description.toLowerCase().includes(term.toLowerCase());
-      
+      const termMatch = !term.trim()
+        || product.name.toLowerCase().includes(term.toLowerCase())
+        || product.description.toLowerCase().includes(term.toLowerCase());
+
       const categoryMatch = !category || product.category === category;
-      
+
       return termMatch && categoryMatch;
     });
   }
-  getRandomProducts(count: number): any[] {
-    const all = this.getAllProducts(); 
-    return all
-      .map(value => ({ value, sort: Math.random() })) 
-      .sort((a, b) => a.sort - b.sort) 
+
+  getRandomProducts(count: number): Product[] {
+    return [...this.products]
+      .map(value => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
       .map(({ value }) => value)
-      .slice(0, count); 
+      .slice(0, count);
   }
-    searchProductsWithFilters(term: string, category?: string, minPrice?: number, maxPrice?: number) {
-      return this.products.filter(product => {
-        const termMatch = !term.trim() || 
-                        product.name.toLowerCase().includes(term.toLowerCase()) || 
-                        product.description.toLowerCase().includes(term.toLowerCase());
-        
-        const categoryMatch = !category || product.category === category;
-        
-        const priceMatch = (!minPrice || product.price >= minPrice) && 
-                           (!maxPrice || product.price <= maxPrice);
-        
-        return termMatch && categoryMatch && priceMatch;
-      });
+
+  searchProductsWithFilters(
+    term: string,
+    category?: string,
+    minPrice?: number,
+    maxPrice?: number
+  ): Product[] {
+    return this.products.filter(product => {
+      const termMatch = !term.trim()
+        || product.name.toLowerCase().includes(term.toLowerCase())
+        || product.description.toLowerCase().includes(term.toLowerCase());
+
+      const categoryMatch = !category || product.category === category;
+
+      const priceMatch =
+        (minPrice == null || product.price >= minPrice) &&
+        (maxPrice == null || product.price <= maxPrice);
+
+      return termMatch && categoryMatch && priceMatch;
+    });
     }
 }

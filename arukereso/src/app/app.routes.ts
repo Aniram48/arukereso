@@ -30,7 +30,9 @@ export const routes: Routes = [
     {
         path: 'login', title:'Login', component: LoginComponent
     },
-    { path: 'cart', title:'Cart', component: CartComponent },
+    { path: 'cart', title:'Cart', component: CartComponent,
+        canActivate:[AuthGuard]
+     },
     
     {
         path: '**', title:'Home', component: HomeComponent

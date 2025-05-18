@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Observable, of, throwError, BehaviorSubject } from 'rxjs'; 
-
+ import { Injectable } from '@angular/core';
+import { Observable, of, throwError, BehaviorSubject } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -18,13 +19,14 @@ export class UsersService {
       phone: '+36 30 111 2233',
       bio: 'Ez Judit bemutatkozása.',
       image: 'assets/images/profile.png',
-      products:[]
+      products: [],
+      roles: ['user']
     }
   ];
 
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
-
+  private readonly USER_DATA_KEY = 'userData';
   constructor() {
     this.loadUserState();
   }
@@ -46,14 +48,8 @@ export class UsersService {
     const user = this.users.find(u => u.email === email && u.password === password);
 
     if (user) {
-      const userInfo = {
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        bio: user.bio,
-        image: user.image,
-        products: user.products
-      };
+      // A teljes user objektumot másoljuk, hogy legyen products is benne
+      const userInfo = { ...user };
       
       localStorage.setItem(this.USER_KEY, JSON.stringify(userInfo));
       this.setToken('fake-jwt-token');
@@ -88,43 +84,49 @@ export class UsersService {
     return this.currentUserSubject.value;
   }
 
-    updateUser(updatedUser: any): Observable<void> {
-      const currentUser = JSON.parse(localStorage.getItem(this.USER_KEY) || '{}');
-      
-     
-      if (updatedUser.password) {
-        updatedUser.password = updatedUser.password;  
-      }
-    
-    
-      if (currentUser && currentUser.email) {
-        const index = this.users.findIndex(user => user.email === currentUser.email);
-        if (index !== -1) {
-          this.users[index] = { ...this.users[index], ...updatedUser };
-          localStorage.setItem(this.USER_KEY, JSON.stringify(this.users[index])); 
-        }
-      }
-    
-      return of(void 0);
-    }
-    private purchasedItems: any[] = [];
- 
-    
-    getPurchasedItems(): any[] {
-      return this.purchasedItems;
-    }
-
-   addPurchasedItems(items: any[]) {
-  const user = this.getUserData();
-  if (user) {
-    if (!user.products) {
-      user.products = [];
-    }
-    user.products.push(...items);
-    this.currentUserSubject.next(user);
-    localStorage.setItem(this.USER_KEY, JSON.stringify(user)); 
+  setUserData(userData: any): void {
+    localStorage.setItem(this.USER_DATA_KEY, JSON.stringify(userData));
   }
-}
-    
+  updateUser(updatedUser: any): Observable<void> {
+    const currentUser = this.getUserData();
+    if (!currentUser) return of(void 0);
 
+    // Frissítjük a felhasználót az aktuális adatokkal és az update paraméterekkel
+    const updated = { ...currentUser, ...updatedUser };
+    
+    // Jelszó kezelése, ha megvan új jelszó (itt pl. csak felülírjuk)
+    if (updatedUser.password) {
+      updated.password = updatedUser.password;
+    }
+
+    // Frissítjük a belső users tömböt is, ha van
+    const index = this.users.findIndex(u => u.email === updated.email);
+    if (index !== -1) {
+      this.users[index] = updated;
+    }
+
+    // Mentés localStorage-be és subject frissítés
+    localStorage.setItem(this.USER_KEY, JSON.stringify(updated));
+    this.currentUserSubject.next(updated);
+
+    return of(void 0);
+  }
+
+  addPurchasedItems(items: any[]): void {
+    const user = this.getUserData();
+    if (user) {
+      if (!user.products) {
+        user.products = [];
+      }
+      user.products.push(...items);
+
+      // Frissítjük a subjectet és a localStorage-t
+      this.currentUserSubject.next(user);
+      localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    }
+  }
+
+ 
+
+  
 }

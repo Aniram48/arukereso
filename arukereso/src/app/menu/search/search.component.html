@@ -1,9 +1,11 @@
 <div class="search-container">
     <h1>Search Products</h1>
+
+     <form #searchForm="ngForm" (ngSubmit)="search()">
     <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search for products..." [(ngModel)]="searchTerm" (keyup.enter)="search()"/>
-      <button (click)="search()">Search</button>
-      <select [(ngModel)]="selectedCategory">
+      <input type="text" id="searchInput" name="searchTerm" placeholder="Search for products..." [(ngModel)]="searchTerm" (keyup.enter)="search()"/>
+      <button  type="submit">Search</button>
+      <select name="selectedCategory" [(ngModel)]="selectedCategory">
         <option value="" disabled selected>Category</option>
         <option value="foods">Foods</option>
         <option value="electrics">Electrics</option>
@@ -20,18 +22,21 @@
       <div class="price-dropdown-content" [class.show]="showPriceFilter">
         <div class="price-slider">
           <label>Min: ${{minPrice}}</label>
-          <input type="range" [(ngModel)]="minPrice" [min]="0" [max]="priceMax" (change)="search()">
+          <input type="range" name="minPrice" [(ngModel)]="minPrice" [min]="0" [max]="priceMax" (change)="search()">
         </div>
         <div class="price-slider">
           <label>Max: ${{maxPrice}}</label>
-          <input type="range" [(ngModel)]="maxPrice" [min]="0" [max]="priceMax" (change)="search()">
+          <input type="range" name="maxPrice" [(ngModel)]="maxPrice" [min]="0" [max]="priceMax" (change)="search()">
         </div>
       </div>
     </div>
     </div>
+</form>
+
     <div class="featured-products">
       <div *ngIf="filteredProducts.length > 0" class="product-list">
-        <div *ngFor="let product of filteredProducts" class="product-card" [routerLink]="['/product', product.id]">
+        <div *ngFor="let product of filteredProducts   "
+        class="product-card" [routerLink]="['/product', product.id]">
           <img [src]="product.image" alt="{{ product.name }}" class="product-image" />
           <h3>{{ product.name }}</h3>
           <p>{{ product.description }}</p>
@@ -43,4 +48,4 @@
         <p>No products found matching your search.</p>
       </div>
     </div>
-</div>
+</div>1

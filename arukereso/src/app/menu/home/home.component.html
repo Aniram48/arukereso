@@ -6,7 +6,7 @@
   </div>
 
   <div class="call-to-action">
-    <button mat-raised-button color="primary" (click)="goToSearch()">Start Searching</button>
+    <button mat-raised-button color="primary" (click)="goToSearch()" [ngClass]="{'highlight-button': featuredProducts.length > 0}">Start Searching</button>
   </div>
 
   <div class="featured-products">

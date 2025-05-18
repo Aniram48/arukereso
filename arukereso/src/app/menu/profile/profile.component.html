@@ -17,9 +17,9 @@
           <button mat-raised-button color="warn" (click)="logout()">Log out</button>
         </mat-card-actions>
         <h3>My products</h3>
+        
         <div class="product-list">
-          <mat-card *ngFor="let product of user.products" class="product-card">
-            
+          <mat-card *ngFor="let product of purchasedProducts" class="product-card">
             <mat-card-title  class="w">{{ product.name }}</mat-card-title>
             <mat-card-subtitle  class="w">{{ product.description }}</mat-card-subtitle>
             <app-rating [rating]="product.id" class="w"></app-rating>

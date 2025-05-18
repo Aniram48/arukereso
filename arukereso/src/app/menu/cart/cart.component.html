@@ -2,7 +2,7 @@
     <h3 mat-card-title>Your Cart</h3>
     <mat-card class="cart-card">
       <mat-list>
-        <mat-list-item *ngFor="let item of cartItems; let i = index">
+        <mat-list-item *ngFor="let item of cartItems | sort: '' ; let i = index">
           <span class="cart-item-name">{{ item.name }}  {{ item.selectedSize }} - {{ item.price | money:'USD':true:'1.0-0' }} </span>
           <button mat-icon-button  (click)="removeItem(i)">
             <mat-icon>delete</mat-icon>

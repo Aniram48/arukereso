@@ -8,7 +8,8 @@ import { UsersService } from './users.service';
 export class CartService {
   private cartKey = 'user_cart';
   private cart: any[] = [];
-
+ private cartItems: any[] = [];
+ 
   constructor(private usersService: UsersService) {}
 
   addToCart(product: any): void {
@@ -39,6 +40,9 @@ export class CartService {
     const cartItems = this.getCart();
     this.usersService.addPurchasedItems(cartItems);
     this.clearCart();
+  }
+   getCartItems(): any[] {
+    return this.cartItems;
   }
   
 }
