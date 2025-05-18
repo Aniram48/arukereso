@@ -12,13 +12,13 @@ export class AuthService {
   constructor(
     private auth: Auth,
     private router: Router,
-    private ngZone: NgZone // Injektáljuk a NgZone-t a zónán belüli műveletek futtatásához
+    private ngZone: NgZone 
   ) {
     this.current = authState(this.auth);
   }
 
   signIn(email: string, password: string): Promise<UserCredential> {
-    // NgZone-on belül futtatjuk a Firebase műveleteket
+    
     return this.ngZone.runOutsideAngular(() => {
       return signInWithEmailAndPassword(this.auth, email, password);
     });
@@ -28,7 +28,6 @@ export class AuthService {
     return this.ngZone.runOutsideAngular(() => {
       localStorage.setItem('isLoggedIn', 'false');
       return signOut(this.auth).then(() => {
-        // Navigációt mindig Angular zónán belül futtatjuk
         this.ngZone.run(() => {
           this.router.navigateByUrl('/home');
         });

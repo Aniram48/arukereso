@@ -31,7 +31,7 @@ import { doc, getDoc, getFirestore } from '@angular/fire/firestore';
 })
 export class ProfileComponent implements OnInit {
   user: any;
-  purchasedProducts: any[] = [];
+  purchasedItems: any[] = [];
   cartItems: any[] = [];
 
   constructor(
@@ -42,17 +42,6 @@ export class ProfileComponent implements OnInit {
     private auth: Auth
   ) {}
 
-  /*ngOnInit() {
-    onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        this.user = this.usersService.getUserData();
-        this.purchasedProducts = this.usersService.getPurchasedItems();
-      } else {
-        this.router.navigate(['/login']);
-      }
-    });
-  }*/
-
 ngOnInit() {
   onAuthStateChanged(this.auth, (user) => {
     if (user) {
@@ -60,7 +49,7 @@ ngOnInit() {
 
       if (userData) {
         this.user = userData;
-        this.purchasedProducts = this.cartService.getCartItems(); // innen kérdezd le
+        this.purchasedItems = this.usersService.getPurchasedItems(); 
         console.log('User data loaded:', this.user);
       } else {
         this.user = {
@@ -69,9 +58,9 @@ ngOnInit() {
           phone: '-',
           bio: '-',
           image: 'assets/images/profile.png',
-          products: []
+          products: this.usersService.getPurchasedItems() 
         };
-        this.purchasedProducts = this.cartService.getCartItems();
+        this.purchasedItems = this.user.products;
         console.log('Default user data set (missing local data):', this.user);
       }
     } else {
@@ -79,6 +68,7 @@ ngOnInit() {
     }
   });
 }
+
 
   logout(): void {
   signOut(this.auth).then(() => {

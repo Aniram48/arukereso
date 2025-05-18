@@ -48,7 +48,7 @@ export class UsersService {
     const user = this.users.find(u => u.email === email && u.password === password);
 
     if (user) {
-      // A teljes user objektumot másoljuk, hogy legyen products is benne
+      
       const userInfo = { ...user };
       
       localStorage.setItem(this.USER_KEY, JSON.stringify(userInfo));
@@ -91,21 +91,17 @@ export class UsersService {
     const currentUser = this.getUserData();
     if (!currentUser) return of(void 0);
 
-    // Frissítjük a felhasználót az aktuális adatokkal és az update paraméterekkel
     const updated = { ...currentUser, ...updatedUser };
     
-    // Jelszó kezelése, ha megvan új jelszó (itt pl. csak felülírjuk)
     if (updatedUser.password) {
       updated.password = updatedUser.password;
     }
 
-    // Frissítjük a belső users tömböt is, ha van
     const index = this.users.findIndex(u => u.email === updated.email);
     if (index !== -1) {
       this.users[index] = updated;
     }
 
-    // Mentés localStorage-be és subject frissítés
     localStorage.setItem(this.USER_KEY, JSON.stringify(updated));
     this.currentUserSubject.next(updated);
 
@@ -120,13 +116,14 @@ export class UsersService {
       }
       user.products.push(...items);
 
-      // Frissítjük a subjectet és a localStorage-t
       this.currentUserSubject.next(user);
       localStorage.setItem(this.USER_KEY, JSON.stringify(user));
     }
   }
-
- 
+  getPurchasedItems(): any[] {
+  const user = this.getUserData();
+  return user && user.products ? user.products : [];
+}
 
   
 }

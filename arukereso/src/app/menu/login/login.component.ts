@@ -51,13 +51,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
-      email: ['alma@gmail.com', [Validators.required, Validators.email]], // Alapértelmezett email
-      password: ['alma123', [Validators.required, Validators.minLength(6)]] // Alapértelmezett jelszó
+      email: ['alma@gmail.com', [Validators.required, Validators.email]], 
+      password: ['Alma01', [Validators.required, Validators.minLength(6)]] 
     });
   }
 
   ngOnInit() {
-    // Ellenőrizzük, hogy már be van-e jelentkezve a felhasználó
     this.authSubscription = this.authService.isLoggedIn().subscribe(user => {
       if (user) {
         this.router.navigateByUrl('/home');
@@ -90,7 +89,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         console.log('Login successful:', userCredential.user);
         this.authService.updateLoginStatus(true);
         
-        // Késleltetett navigáció a home oldalra (hogy legyen idő a státusz frissítésére)
+      
         setTimeout(() => {
           this.router.navigateByUrl('/home');
         }, 500);

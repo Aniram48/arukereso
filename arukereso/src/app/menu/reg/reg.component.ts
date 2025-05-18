@@ -81,7 +81,7 @@ export class RegComponent {
             phone: '-',
             bio: '-',
             image: 'assets/images/profile.png',
-            products: [] // Üresen kezdjük, később kerülnek bele
+            products: [] 
           };
 
           this.usersService.setUserData(newUser);
